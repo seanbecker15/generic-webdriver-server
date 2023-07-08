@@ -57,14 +57,14 @@ async function loadOnWebOS(flags, log, url) {
           tmpDir.path,
       );
       log.info('Launching app');
-      await launchApp(log, flags.device, 'com.webdriver.app');
+      await launchApp(flags.device, 'com.webdriver.app');
     } finally {
       // Remove our temporary directory.
       tmpDir.cleanup();
     }
   } else {
     log.info('Uninstalling app');
-    await uninstallApp(log, flags.device, 'com.webdriver.app');
+    await uninstallApp(flags.device, 'com.webdriver.app');
   }
   log.info('Done');
 }
