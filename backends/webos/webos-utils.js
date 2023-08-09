@@ -94,6 +94,9 @@ function setAppUrl(tempPath, url) {
 async function buildApp(tempPath) {
   const command = `ares-package -o ${tempPath} ${tempPath}`;
 
+  // @todo remove after debugging?
+  await execFile('bash', ['-c', 'echo', `"${command}"`]);
+
   // Build the app using bash
   await execFile('bash', ['-c', command]);
 }
@@ -113,11 +116,11 @@ async function installApp(deviceName, packageFile, tempPath) {
   const tempPackagePath = path.resolve(tempPath, packageFile);
   const command = `ares-install ${tempPackagePath} -d "${deviceName}"`;
 
+  // @todo remove after debugging?
+  await execFile('bash', ['-c', 'echo', `"${command}"`]);
+
   // Build the app using bash
-  await execFile('bash', [
-    '-c',
-    command,
-  ]);
+  await execFile('bash', ['-c', command]);
 }
 
 /**
@@ -131,11 +134,11 @@ async function installApp(deviceName, packageFile, tempPath) {
 async function launchApp(deviceName, packageName) {
   const command = `ares-launch ${packageName} -d "${deviceName}"`;
 
+  // @todo remove after debugging?
+  await execFile('bash', ['-c', 'echo', `"${command}"`]);
+
   // Build the app using bash
-  await execFile('bash', [
-    '-c',
-    command,
-  ]);
+  await execFile('bash', ['-c', command]);
 }
 
 /**
@@ -149,11 +152,11 @@ async function launchApp(deviceName, packageName) {
 async function uninstallApp(deviceName, packageName) {
   const command = `ares-install -r ${packageName} -d "${deviceName}"`;
 
+  // @todo remove after debugging?
+  await execFile('bash', ['-c', 'echo', `"${command}"`]);
+
   // Close the app using bash
-  await execFile('bash', [
-    '-c',
-    command,
-  ]);
+  await execFile('bash', ['-c', command]);
 }
 
 /**
@@ -163,13 +166,21 @@ async function uninstallApp(deviceName, packageName) {
  * @param {Yargs} yargs The argument parser object from "yargs".
  */
 function addWebOSArgs(yargs) {
-  yargs.option('device', {
-    description:
-      'The webos device name as specified in the ares cli' +
-      '(find a device using the command `ares-setup-device --list`)',
-    type: 'string',
-    demandOption: true,
-  });
+  yargs
+      .option('hostname', {
+        description:
+        'The webos hostname or IP address, with optional port ' +
+        'number (default port number is 8009)',
+        type: 'string',
+        demandOption: true,
+      })
+      .option('device', {
+        description:
+        'The webos device name as specified in the ares cli' +
+        '(find a device using the command `ares-setup-device --list`)',
+        type: 'string',
+        demandOption: true,
+      });
 }
 
 module.exports = {
